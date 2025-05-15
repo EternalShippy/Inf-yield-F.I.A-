@@ -191,10 +191,26 @@ text1 = {}
 text2 = {}
 scroll = {}
 
+-- Custom theme definitions
+local currentShade1 = Color3.fromRGB(255, 137, 10)
+local currentShade2 = Color3.fromRGB(255, 224, 6)
+local currentShade3 = Color3.fromRGB(12, 118, 255)
+local scrollColor   = Color3.fromRGB(12, 118, 255)
+
 ScaledHolder.Name = randomString()
 ScaledHolder.Size = UDim2.fromScale(1, 1)
 ScaledHolder.BackgroundTransparency = 1
 ScaledHolder.Parent = PARENT
+
+-- Full-screen background image
+local Background = Instance.new("ImageLabel")
+Background.Name = "Background"
+Background.Parent = ScaledHolder
+Background.ZIndex = 0
+Background.Size = UDim2.fromScale(1, 1)
+Background.Position = UDim2.new(0, 0)
+Background.BackgroundTransparency = 1
+Background.Image = "rbxassetid://107414540599162"
 Scale.Name = randomString()
 
 Holder.Name = randomString()
@@ -216,54 +232,6 @@ Title.Size = UDim2.new(0, 250, 0, 20)
 Title.Font = Enum.Font.SourceSans
 Title.TextSize = 18
 Title.Text = "Infinite Yield (Fun is Abundant) FE v" .. currentVersion -- [Replace GUI Title]
-
-
--- [Replace] Wallpaper plugin background setup
-local HttpService    = game:GetService("HttpService")
-local settingsFile   = "wallpapersettings.json"
-local defaultAsset   = "rbxassetid://107414540599162"
-local defaultTransp  = 0.4
-
--- Ensure settings file exists
-if not pcall(function() readfile(settingsFile) end) then
-    writefile(settingsFile, HttpService:JSONEncode({
-        image             = defaultAsset,
-        imagetransparency = defaultTransp,
-    }))
-end
-
--- Read persisted settings
-local settings = HttpService:JSONDecode(readfile(settingsFile))
-
--- Create wallpaper label under Dark frame
-local Wallpaper = Instance.new("ImageLabel", Dark)
-Wallpaper.Name               = "WallpaperBackground"
-Wallpaper.BackgroundTransparency = 1
-Wallpaper.Size               = UDim2.new(1, 0, 1, 0)
-Wallpaper.Position           = UDim2.new(0, 0, 0, 0)
-Wallpaper.ZIndex             = 0
-
--- Load the wallpaper image and transparency
-local function loadWallpaper(image, transparency)
-    Wallpaper.Image             = image
-    Wallpaper.ImageTransparency = transparency
-end
-
-loadWallpaper(
-    (settings.image ~= "" and settings.image) or defaultAsset,
-    settings.imagetransparency or defaultTransp
-)
-
--- [Add] Plugin Commands Integration
-local plugins = {"flingv2", "Ghosting", "Inject", "iydestroy", "MOMENTUM”, ”rainingtacos", "wallpaper"}
-for _, plugin in ipairs(plugins) do
-    local ok, mod = pcall(require, plugin)
-    if ok and mod.Commands then
-        for cmd, info in pairs(mod.Commands) do
-            addcmd(cmd, info.Aliases, info.Function, info.Description, info.ListName, "Plugins")
-        end
-    end
-end
 
 do
 	local emoji = ({
@@ -1836,6 +1804,28 @@ scroll_3.ScrollBarThickness = 8
 scroll_3.TopImage = "rbxasset://textures/ui/Scroll/scroll-middle.png"
 table.insert(scroll,scroll_3)
 table.insert(shade2,scroll_3)
+
+-- Apply custom theme shades
+for _, v in ipairs(shade1) do
+    if v.BackgroundColor3 then v.BackgroundColor3 = currentShade1 end
+end
+for _, v in ipairs(shade2) do
+    if v.BackgroundColor3 then v.BackgroundColor3 = currentShade2 end
+end
+for _, v in ipairs(shade3) do
+    if v.BackgroundColor3 then v.BackgroundColor3 = currentShade3 end
+end
+for _, v in ipairs(scroll) do
+    if v.ScrollBarImageColor3 then v.ScrollBarImageColor3 = scrollColor end
+end
+
+-- Apply text colors
+for _, v in ipairs(text1) do
+    if v.TextColor3 then v.TextColor3 = Color3.fromRGB(0, 0, 0) end
+end
+for _, v in ipairs(text2) do
+    if v.TextColor3 then v.TextColor3 = Color3.fromRGB(0, 0, 0) end
+end
 
 selectChat.Name = "selectChat"
 selectChat.Parent = background
@@ -12834,6 +12824,17 @@ end
 pcall(function() Scale.Scale = math.max(Holder.AbsoluteSize.X / 1920, guiScale) end)
 Scale.Parent = ScaledHolder
 ScaledHolder.Size = UDim2.fromScale(1 / Scale.Scale, 1 / Scale.Scale)
+
+-- Background image for Infinite Yield
+local BG = Instance.new("ImageLabel")
+BG.Name = "Background"
+BG.Parent = ScaledHolder
+BG.BackgroundTransparency = 1
+BG.Image = "rbxassetid://107414540599162"
+BG.Size = UDim2.fromScale(1, 1)
+BG.Position = UDim2.new(0, 0, 0, 0)
+BG.ZIndex = 0
+
 Scale:GetPropertyChangedSignal("Scale"):Connect(function()
     ScaledHolder.Size = UDim2.fromScale(1 / Scale.Scale, 1 / Scale.Scale)
     for _, v in ScaledHolder:GetDescendants() do
