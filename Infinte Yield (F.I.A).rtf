@@ -184,6 +184,14 @@ else
     PARENT = Main
 end
 
+-- Theme color variables
+local currentShade1 = Color3.fromRGB(255, 137, 10)
+local currentShade2 = Color3.fromRGB(255, 224, 6)
+local currentShade3 = Color3.fromRGB(12, 118, 255)
+local scrollercolor  = Color3.fromRGB(12, 118, 255)
+local textcolor1     = Color3.new(0, 0, 0)
+local textcolor2     = Color3.new(0, 0, 0)
+
 shade1 = {}
 shade2 = {}
 shade3 = {}
@@ -191,17 +199,11 @@ text1 = {}
 text2 = {}
 scroll = {}
 
--- Custom theme definitions
-local currentShade1 = Color3.fromRGB(255, 137, 10)
-local currentShade2 = Color3.fromRGB(255, 224, 6)
-local currentShade3 = Color3.fromRGB(12, 118, 255)
-local scrollColor   = Color3.fromRGB(12, 118, 255)
-
 ScaledHolder.Name = randomString()
 ScaledHolder.Size = UDim2.fromScale(1, 1)
 ScaledHolder.BackgroundTransparency = 1
 ScaledHolder.Parent = PARENT
-
+Scale.Name = randomString()
 
 Holder.Name = randomString()
 Holder.Parent = ScaledHolder
@@ -221,7 +223,7 @@ Title.BorderSizePixel = 0
 Title.Size = UDim2.new(0, 250, 0, 20)
 Title.Font = Enum.Font.SourceSans
 Title.TextSize = 18
-Title.Text = "Infinite Yield (Fun is Abundant) FE v" .. currentVersion -- [Replace GUI Title]
+Title.Text = "Inf Yield (Fun is Abundant) [" .. currentVersion .. "]"
 
 do
 	local emoji = ({
@@ -244,7 +246,7 @@ do
 			return ("03 %02d"):format(G)
 		end)(tonumber(os.date"%Y"))] = "🥚",
 		["10 31"] = "🎃",
-		["04 30"] = "Bingle Day",
+		[“04 30”] = “Bingle Day 🧡”,
 		["12 25"] = "🎄"
 	})[os.date("%m %d")]
 	if emoji then
@@ -606,6 +608,14 @@ Description.TextWrapped = true
 Description.ZIndex = 10
 table.insert(text1,Description)
 
+IntroBackground.Name = "IntroBackground"
+IntroBackground.Parent = Holder
+IntroBackground.Active = true
+IntroBackground.BackgroundColor3 = Color3.fromRGB(36, 36, 37)
+IntroBackground.BorderSizePixel = 0
+IntroBackground.Position = UDim2.new(0, 0, 0, 45)
+IntroBackground.Size = UDim2.new(0, 250, 0, 175)
+IntroBackground.ZIndex = 10
 
 Logo.Name = "Logo"
 Logo.Parent = Holder
@@ -625,7 +635,7 @@ Credits.Position = UDim2.new(0, 0, 0.9, 30)
 Credits.Size = UDim2.new(0, 250, 0, 20)
 Credits.Font = Enum.Font.SourceSansLight
 Credits.FontSize = Enum.FontSize.Size18
-Credits.Text = "Edge, Zwolf, Moon, Eternal_Sh1ppy"
+Credits.Text = "Edge // Zwolf // Moon // Toon"
 Credits.TextColor3 = Color3.new(1, 1, 1)
 Credits.ZIndex = 10
 
@@ -1786,28 +1796,6 @@ scroll_3.ScrollBarThickness = 8
 scroll_3.TopImage = "rbxasset://textures/ui/Scroll/scroll-middle.png"
 table.insert(scroll,scroll_3)
 table.insert(shade2,scroll_3)
-
--- Apply custom theme shades
-for _, v in ipairs(shade1) do
-    if v.BackgroundColor3 then v.BackgroundColor3 = currentShade1 end
-end
-for _, v in ipairs(shade2) do
-    if v.BackgroundColor3 then v.BackgroundColor3 = currentShade2 end
-end
-for _, v in ipairs(shade3) do
-    if v.BackgroundColor3 then v.BackgroundColor3 = currentShade3 end
-end
-for _, v in ipairs(scroll) do
-    if v.ScrollBarImageColor3 then v.ScrollBarImageColor3 = scrollColor end
-end
-
--- Apply text colors
-for _, v in ipairs(text1) do
-    if v.TextColor3 then v.TextColor3 = Color3.fromRGB(0, 0, 0) end
-end
-for _, v in ipairs(text2) do
-    if v.TextColor3 then v.TextColor3 = Color3.fromRGB(0, 0, 0) end
-end
 
 selectChat.Name = "selectChat"
 selectChat.Parent = background
@@ -12806,17 +12794,6 @@ end
 pcall(function() Scale.Scale = math.max(Holder.AbsoluteSize.X / 1920, guiScale) end)
 Scale.Parent = ScaledHolder
 ScaledHolder.Size = UDim2.fromScale(1 / Scale.Scale, 1 / Scale.Scale)
-
--- Background image for Infinite Yield
-local BG = Instance.new("ImageLabel")
-BG.Name = "Background"
-BG.Parent = ScaledHolder
-BG.BackgroundTransparency = 1
-BG.Image = "rbxassetid://107414540599162"
-BG.Size = UDim2.fromScale(1, 1)
-BG.Position = UDim2.new(0, 0, 0, 0)
-BG.ZIndex = 0
-
 Scale:GetPropertyChangedSignal("Scale"):Connect(function()
     ScaledHolder.Size = UDim2.fromScale(1 / Scale.Scale, 1 / Scale.Scale)
     for _, v in ScaledHolder:GetDescendants() do
@@ -12826,23 +12803,6 @@ Scale:GetPropertyChangedSignal("Scale"):Connect(function()
         end
     end
 end)
-
--- Custom Color Changes
--- Holder background
-Holder.BackgroundColor3 = Color3.fromRGB(255, 165, 0) -- Primary orange
--- Title background
-Title.BackgroundColor3 = Color3.fromRGB(255, 165, 0) -- Primary orange
--- CMDsF scrollbar
-CMDsF.ScrollBarImageColor3 = Color3.fromRGB(0, 255, 255) -- Aqua blue scrollbar
--- Cmdbar styling
-Cmdbar.BackgroundColor3 = Color3.fromRGB(0, 0, 0) -- TextBox background
-Cmdbar.BackgroundTransparency = 0.5
-Cmdbar.TextColor3 = Color3.fromRGB(255, 255, 255) -- White text
--- Button styling loop
-for _, button in pairs({Clear, SaveChatlogs, Toggle, Toggle_2, Exit, Hide}) do
-    button.BackgroundColor3 = Color3.fromRGB(128, 128, 128) -- Button gray
-    button.TextColor3 = Color3.fromRGB(255, 255, 255) -- Button text white
-end
 
 updateColors(currentShade1,shade1)
 updateColors(currentShade2,shade2)
@@ -13091,7 +13051,6 @@ end)
 
 task.spawn(function()
 	wait()
-	Credits.Text = "Edge // Zwolf // Moon // Toon // Eternal_Sh1ppy"
 	Credits:TweenPosition(UDim2.new(0, 0, 0.9, 0), "Out", "Quart", 0.2)
 	Logo:TweenSizeAndPosition(UDim2.new(0, 175, 0, 175), UDim2.new(0, 37, 0, 45), "Out", "Quart", 0.3)
 	wait(1)
